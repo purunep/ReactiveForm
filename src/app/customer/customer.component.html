@@ -1,0 +1,120 @@
+<div class="card">
+  <div class="card-header">
+    Sign Up!
+  </div>
+  <div class="card-body">
+    <form novalidate (ngSubmit)="save()" [formGroup]="customerForm">
+      <div class="form-group row">
+        <label class="col-md-2 col-form-label" for="firstNameId"> First Name</label>
+        <div class="col-md-8">
+          <input class="form-control" id="firstnameId" type="text"
+          placeholder="First Name(required)" formControlName="firstName"
+          [ngClass]="{'is-invalid': valMessage }" />
+          <span class="invalid-feedback">
+           {{ valMessage }}
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-2 col-form-label" for="phoneId">Phone</label>
+        <div class="col-md-8">
+          <input class="form-control" id="phoneId" type="text"
+          placeholder="Phone Number" formControlName="phone"
+          [ngClass]="{'is-invalid':((customerForm.get('phone').touched || customerForm.get('phone').dirty)) && 
+        !customerForm.get('phone').valid}" />
+          <span class="invalid-feedback">
+            <span *ngIf="customerForm.get('phone').errors?.required">
+              Please enter your phone name.
+            </span>
+
+          </span>
+
+        </div>
+      </div>
+      <div class="form-group row mb-2">
+        <label class="col-md-2 col-form-label" for="ratingId">Rating</label>
+        <div class="col-md-8">
+          <input class="form-control" id="ratingId" type="text"
+          placeholder="1 to 5" formControlName="rating"
+          [ngClass]="{'is-invalid':((customerForm.get('rating').touched || customerForm.get('rating').dirty)) && 
+        !customerForm.get('rating').valid}" />
+          <span class="invalid-feedback">
+            <span *ngIf="customerForm.get('rating').errors?.range">
+              Please enter between 1 to 5.
+            </span>
+
+          </span>
+
+        </div>
+      </div>
+<div class="form-group row mb-2">
+<label class="col-md-2 col-form-label pt-0">
+  Send Notifications
+</label>
+<div class="col-md-8">
+  <div class="form-check form-check-inline">
+    <label class="form-check-label">
+      <input class="form-check-input" type="radio"
+      value="email" formControlName="notification">
+      Email
+    </label>
+  </div>
+  <div class="form-check form-check-inline">
+    <label class="form-check-label">
+      <input class="form-check-input" type="radio"
+      value="text" formControlName="notification">
+      Text
+    </label>
+  </div>
+</div>
+
+</div>
+<div class="form-group row mb-2">
+    <div class="form-check form-check-inline">
+        <label class="form-check-label">
+          <input class="form-check-input" type="checkbox" formControlName="sendCatalog">
+          Send Catalog
+        </label>
+      </div>
+</div>
+<div *ngIf="customerForm.get('sendCatalog').value">
+  <div formArrayName="addresses" 
+          *ngFor="let address of addresses.controls; let i=index">
+        <div [formGroupName]="i">
+              <div class="form-group row mb-2">
+                  <label class="col-md-2 col-form-label" attr.for="{{'streetaddressId1' + i}}"> Street Address 1</label>
+                  <div class="col-md-8">
+                    <input class="form-control" id="{{'streetaddressId1' + i}}" type="text"
+                    placeholder="Street Address 1" formControlName="streetaddress1" />
+
+                  </div>
+              </div>
+
+              <div class="form-group row mb-2">
+                  <label class="col-md-2 col-form-label" attr.for="{{'streetaddressId2' + i}}"> Street Address 2</label>
+                  <div class="col-md-8">
+                    <input class="form-control" id="{{'streetaddressId2' + i}}" type="text"
+                    placeholder="Street Address 2" formControlName="streetaddress2" />
+
+                  </div>
+              </div>
+        </div>
+  </div>
+  <div class="form-group row mb-2">
+    <div class="col-md-4">
+      <button class="btn btn-outline-primary" type="button"
+      [disabled]="!addresses.valid"
+      (click)="addAddress()">Add Another Address</button>
+    </div>
+  </div>
+</div>
+
+<button class="btn btn-outline-secondary" type="button"
+(click)="populateTestData()">Test Data</button>
+{{customerForm.value | json}}
+    </form>
+
+  </div>
+
+</div>
